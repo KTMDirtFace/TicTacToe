@@ -95,16 +95,7 @@ def FillBoardLegend():
 #######################
 # Draw The Game Board 
 #######################
-#def DrawBoardLegend():
-#    for row in range(len(boardValuesLegend)) :
-#        for column in range(len(boardValuesLegend[row])) :
-#            print(boardValuesLegend[row][colum])
-
-
-#######################
-# Draw The Game Board 
-#######################
-def DrawBoardNew(dataValues):
+def DrawBoard(dataValues):
 #    for row in range(len(dataValues)) :
 #        for column in range(len(dataValues[row])) :
 #            print(dataValues[row][column])
@@ -150,44 +141,6 @@ def DrawBoardNew(dataValues):
         if bIsLastRow != True:
             print(horizontalSeparatorAsString)
 
-def DrawBoard() :
-    cellSize = 3 # number of characters in a cell ex. " X " two spaces and a character.
-    cellCharIndex = 1
-    numCharsInRow = gameColumns*cellSize + (gameColumns-1)
-
-    # Build the horizonal separator between rows
-    ############################################
-    horizontalSeparator = []
-    for chars in range(numCharsInRow):
-        horizontalSeparator.append("-")
-
-    horizontalSeparatorAsString = "".join(horizontalSeparator)
-
-    # Build a blank row.
-    ####################
-    buildRow = []
-    
-    for chars in range(gameColumns):
-        for cellchar in range(cellSize):
-            buildRow.append(' ')
-
-        bIsLast = ((chars+1) == gameColumns)
-        if bIsLast != True:
-            buildRow.append("|")
-
-    blankdRowAsString = "".join(buildRow)
-
-    #print blank board
-    for row in range(gameRows):
-        rem = gameRows % (row+1)
-        bEven = (rem == 0)
-        bOdd = (rem != 0)
-        bIsLastRow = ((row+1) == gameRows)
-
-        print(blankdRowAsString)
-        if bIsLastRow != True:
-            print(horizontalSeparatorAsString)
-        
 ######################
 ## MORON COMPUTER AI
 ######################
@@ -195,6 +148,11 @@ def DrawBoard() :
     # for now choose a random ass cell
     # find empty cells
     
+#######
+# Init
+#######
+#def Init() :
+
 
 ########################
 # Main Game Function...
@@ -212,11 +170,12 @@ def Run() :
     print(firstPlayer + " Character: " + firstPlayerCharacter)
 
     # Draw Board
-    DrawBoard()
-
-    # Draw Board new
     FillBoardLegend()
-    DrawBoardNew(boardValuesLegend)
+    print("---------------Legend-----------------------")
+    DrawBoard(boardValuesLegend)
+    print("--------------------------------------------")
+    print("--------------------------------------------")
+    DrawBoard(boardValues)
 
 ################
 # Run the game.
