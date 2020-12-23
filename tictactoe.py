@@ -31,9 +31,6 @@ players = [ "Jack", "Moron Computer" ]
 # Where all the game X and O's live.
 boardValues = [[' ' for colums in range(gameRows)] for rows in range(gameColumns)]
 boardValuesLegend = [[0 for colums in range(gameRows)] for rows in range(gameColumns)]
-#print(boardValues)
-print(boardValuesLegend)
-# access them with things like boardValues[0][1] ?
 
 ###############
 # Player Class
@@ -64,6 +61,7 @@ class AIPlayer(Player):
         return False
 
 #### TEST JUNK ###########################################################
+"""
 Player1 = Player("Jack", 'X')
 print(Player1.name)
 print(Player1.character)
@@ -79,6 +77,7 @@ print(AIPlayer1.IsHumanControlled())
 AIPlayer1.RunTurn()
 
 print("")
+"""
 #### TEST JUNK ###########################################################
 
 #########################
@@ -151,14 +150,16 @@ def DrawBoard(dataValues):
 #######
 # Init
 #######
-#def Init() :
+def Init() :
+    random.seed()
+    print(">>>Welcome to Jacksquatch Tic-Tac-Toe<<<")
 
 
 ########################
 # Main Game Function...
 ########################
 def Run() :
-    random.seed()
+    Init()
     #Choose random player to start.
     firstPlayerIndex = random.randint(0, len(players)-1)
     firstPlayer = players[firstPlayerIndex]
@@ -174,6 +175,7 @@ def Run() :
     print("---------------Legend-----------------------")
     DrawBoard(boardValuesLegend)
     print("--------------------------------------------")
+    print("---------------GAME BOARD-------------------")
     print("--------------------------------------------")
     DrawBoard(boardValues)
 
