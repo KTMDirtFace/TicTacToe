@@ -27,6 +27,7 @@ class Player:
         #print("PlayerTurn")
         turnCellValue = input("Its your turn enter cell:")
         print("Turn Value is: " + str(turnCellValue))
+        return int(turnCellValue)
 
     def IsHumanControlled(self):
         return True
@@ -41,6 +42,7 @@ class AIPlayer(Player):
 
     def RunTurn(self):
         print("AITurn")
+        return int(0)
 
     def IsHumanControlled(self):
         return False
@@ -54,15 +56,20 @@ class TTTGameManager:
         self.gameColumns = columns
         self.boardValues = [[' ' for colums in range(self.gameRows)] for rows in range(self.gameColumns)]
         self.boardValuesLegend = [[0 for colums in range(self.gameRows)] for rows in range(self.gameColumns)]
+        self.Players = []
 
         self.FillBoardLegend()
         random.seed()               # Seed randomness 
 
+        self.currentPlayerIndex = 0
+
+    ###
+    ## Fill legend, with numbers corresponding to grid cells.
     def FillBoardLegend(self):
         count = 0
         for row in range(len(self.boardValuesLegend)) :
             for column in range(len(self.boardValuesLegend[row])) :
-                self.boardValuesLegend[row][column] = str(count)
+                self.boardValuesLegend[row][column] = count
                 count = count + 1
 
     #######################
@@ -114,9 +121,84 @@ class TTTGameManager:
             if bIsLastRow != True:
                 print(horizontalSeparatorAsString)
 
+    # Add Player
+    def AddHumanPlayer(self, name, character):
+        self.Players.append(Player(name, character))
 
-    def RunGame(self):
-        print("---------->>>Welcome to Jacksquatch Tic-Tac-Toe<<<----------")
+    # Add CPU Player
+    def AddAIPlayer(self, name, character):
+        self.Players.append(AIPlayer(name, character))
+
+    # Run Turn
+    def RunTurn(self):
+        turnCellIndex = self.Players[self.currentPlayerIndex].RunTurn()
+
+        bIsValidCellNumber = self.Validate(turnCellIndex)
+
+        if bIsValidCellNumber == True :
+            print("Valid choice!")
+            self.UpdateCell(turnCellIndex, self.Players[self.currentPlayerIndex].character)
+        else :
+            print("Error invalid cell choice!")
+
+    # Choose next player
+    def NextTurn(self):
+        nextTurnPlayerIndex = self.currentPlayerIndex + 1
+        if nextTurnPlayerIndex > (len(self.Players)-1):
+            nextTurnPlayerIndex = 0
+
+        self.currentPlayerIndex = nextTurnPlayerIndex
+
+    # How many cells are still left on the board
+    def NumOpenCells(self):
+        count = 0
+        for row in range(len(self.boardValues)) :
+            for column in range(len(self.boardValues[row])) :
+                value = self.boardValues[row][column]
+                if value == ' ':
+                    count += 1
+
+        return count
+
+    # Validate value
+    def Validate(self, cellIndex):
+        # Make sure it is a valid cell 
+        # Also make sure it's not taken alraedy.
+        cellRow, cellColumn = self.GetCellLocation(cellIndex)
+
+        bIsValidCell = False
+
+        if cellRow >=0 and cellColumn >= 0 :
+            cellValue = self.boardValues[cellRow][cellColumn]
+            if cellValue == ' ' :
+                bIsValidCell = True
+
+        return bIsValidCell
+
+    # Convert cell index into row, column
+    def GetCellLocation(self, cellIndex) :
+        boardRow = -1
+        boardColumn = -1
+
+        for row in range(len(self.boardValuesLegend)) :
+            for column in range(len(self.boardValuesLegend[row])) :
+                value = self.boardValuesLegend[row][column]
+
+                if value == cellIndex :
+                    boardRow = row
+                    boardColumn = column
+                    return boardRow, boardColumn
+
+        return boardRow, boardColumn
+    # Update cell on board.
+    def UpdateCell(self, cellIndex, cellValue) :
+        cellRow, cellColumn = self.GetCellLocation(cellIndex)
+
+        if self.Validate(cellIndex) == True :
+            self.boardValues[cellRow][cellColumn] = cellValue
+
+    # Draw board and legend
+    def DrawBoardAndLegend(self):
         print("---------------Legend-----------------------")
         self.DrawBoard(self.boardValuesLegend)
         print("--------------------------------------------")
@@ -124,43 +206,29 @@ class TTTGameManager:
         print("--------------------------------------------")
         self.DrawBoard(self.boardValues)
 
+    def RunGame(self):
+        print("---------->>>Welcome to Jacksquatch Tic-Tac-Toe<<<----------")
+        self.DrawBoardAndLegend()
 
-##########################
-# Game Data - global barf
-##########################
-playerCharacter = [ 'X', 'O']
-players = [ "Jack", "Moron Computer" ]
-#print(playerCharacter)
-# Where all the game X and O's live.
-#boardValues = [[' ' for colums in range(gameRows)] for rows in range(gameColumns)]
-#boardValuesLegend = [[0 for colums in range(gameRows)] for rows in range(gameColumns)]
+        # Choose random player to start.
+        self.currentPlayerIndex = random.randint(0, len(self.Players)-1)
+        print(self.Players[self.currentPlayerIndex].name + " is up first.")
 
+        t = 0
+        while t < 2:
+            self.RunTurn()
+            self.NextTurn()
+            self.DrawBoardAndLegend()
+            t += 1
 
 ########################
 # Main Game Function...
 ########################
 def Run() :
     gameManager = TTTGameManager(3,3)
+    gameManager.AddHumanPlayer("Jack", "X")
+    gameManager.AddAIPlayer("Moron Computer", "O")
     gameManager.RunGame()
-"""
-    Init()
-    #Choose random player to start.
-    firstPlayerIndex = random.randint(0, len(players)-1)
-    firstPlayer = players[firstPlayerIndex]
-
-    #First player is always X?
-    firstPlayerCharacter = playerCharacter[0]
-
-    print("Player1: " + firstPlayer)
-    print(firstPlayer + " Character: " + firstPlayerCharacter)
-
-    DrawLegendAndBoard()
-
-
-    print("")
-    p1 = Player("Jack", 'X')
-    p1.RunTurn()
-"""
 
 ################
 # Run the game.
