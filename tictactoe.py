@@ -25,6 +25,9 @@ gameNumAIPlayers = 1
 gameRows = 3
 gameColumns = 3
 
+##########################
+# Game Data - global barf
+##########################
 playerCharacter = [ 'X', 'O']
 players = [ "Jack", "Moron Computer" ]
 #print(playerCharacter)
@@ -146,13 +149,24 @@ def DrawBoard(dataValues):
 #def PerformComptuerTerm():
     # for now choose a random ass cell
     # find empty cells
-    
+
+def DrawLegendAndBoard():
+    print("---------------Legend-----------------------")
+    DrawBoard(boardValuesLegend)
+    print("--------------------------------------------")
+    print("---------------GAME BOARD-------------------")
+    print("--------------------------------------------")
+    DrawBoard(boardValues)
+
 #######
 # Init
 #######
 def Init() :
-    random.seed()
     print(">>>Welcome to Jacksquatch Tic-Tac-Toe<<<")
+
+    FillBoardLegend()           # Fill legend with data.
+    random.seed()
+
 
 
 ########################
@@ -170,14 +184,7 @@ def Run() :
     print("Player1: " + firstPlayer)
     print(firstPlayer + " Character: " + firstPlayerCharacter)
 
-    # Draw Board
-    FillBoardLegend()
-    print("---------------Legend-----------------------")
-    DrawBoard(boardValuesLegend)
-    print("--------------------------------------------")
-    print("---------------GAME BOARD-------------------")
-    print("--------------------------------------------")
-    DrawBoard(boardValues)
+    DrawLegendAndBoard()
 
 ################
 # Run the game.
