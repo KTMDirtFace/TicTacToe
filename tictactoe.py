@@ -151,6 +151,9 @@ def DrawBoard(dataValues):
     # for now choose a random ass cell
     # find empty cells
 
+######################################
+# Draw the game legend and the board.
+######################################
 def DrawLegendAndBoard():
     print("---------------Legend-----------------------")
     DrawBoard(boardValuesLegend)
@@ -163,7 +166,7 @@ def DrawLegendAndBoard():
 # Init
 #######
 def Init() :
-    print(">>>Welcome to Jacksquatch Tic-Tac-Toe<<<")
+    print("---------->>>Welcome to Jacksquatch Tic-Tac-Toe<<<----------")
 
     FillBoardLegend()           # Fill legend with data.
     random.seed()
