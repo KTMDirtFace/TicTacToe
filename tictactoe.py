@@ -109,6 +109,29 @@ def DrawBoardNew(dataValues):
         for column in range(len(dataValues[row])) :
             print(dataValues[row][column])
 
+    numRows         = len(dataValues)
+    numColumns      = len(dataValues[0])
+    #print("NumRows: " + str(numRows) + " NumColums: " + str(numColumns))
+
+    cellSize        = 3 # number of characters in a cell ex. " X " two spaces and a character.
+    cellCharIndex   = 1
+    numCharsInRow   = numColumns*cellSize + (numColumns-1)
+    
+    ############################################
+    # Build the horizonal separator between rows
+    horizontalSeparator = []
+    for chars in range(numCharsInRow):
+        horizontalSeparator.append("-")
+
+    horizontalSeparatorAsString = "".join(horizontalSeparator)
+
+    #################
+    # Build the rows
+    # Loop the rows, insert cell value at index 1 for each cell.
+    #or row in range(numRows):
+    
+    
+
 def DrawBoard() :
     cellSize = 3 # number of characters in a cell ex. " X " two spaces and a character.
     cellCharIndex = 1
