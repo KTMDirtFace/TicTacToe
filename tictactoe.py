@@ -12,13 +12,8 @@ import random
 gameErrorStringGeneric = "...[ERROR] Go take a dump!..."
 gameNumHumanPlayers = 1
 gameNumAIPlayers = 1
-gameRows = 3
-gameColumns = 3
-
-############################
-# Tic Tac Toe Game Manager
-############################
-#class TTTGameManager:
+#gameRows = 3
+#gameColumns = 3
 
 ###############
 # Player Class
@@ -50,6 +45,86 @@ class AIPlayer(Player):
     def IsHumanControlled(self):
         return False
 
+############################
+# Tic Tac Toe Game Manager
+############################
+class TTTGameManager:
+    def __init__(self, rows, columns):
+        self.gameRows = rows
+        self.gameColumns = columns
+        self.boardValues = [[' ' for colums in range(self.gameRows)] for rows in range(self.gameColumns)]
+        self.boardValuesLegend = [[0 for colums in range(self.gameRows)] for rows in range(self.gameColumns)]
+
+        self.FillBoardLegend()
+        random.seed()               # Seed randomness 
+
+    def FillBoardLegend(self):
+        count = 0
+        for row in range(len(self.boardValuesLegend)) :
+            for column in range(len(self.boardValuesLegend[row])) :
+                self.boardValuesLegend[row][column] = str(count)
+                count = count + 1
+
+    #######################
+    # Draw The Game Board 
+    #######################
+    def DrawBoard(self, dataValues):
+    #    for row in range(len(dataValues)) :
+    #        for column in range(len(dataValues[row])) :
+    #            print(dataValues[row][column])
+
+        numRows         = len(dataValues)
+        numColumns      = len(dataValues[0])
+        #print("NumRows: " + str(numRows) + " NumColums: " + str(numColumns))
+
+        cellSize        = 3 # number of characters in a cell ex. " X " two spaces and a character.
+        cellCharIndex   = 1
+        numCharsInRow   = numColumns*cellSize + (numColumns-1)
+        
+        ############################################
+        # Build the horizonal separator between rows
+        horizontalSeparator = []
+        for chars in range(numCharsInRow):
+            horizontalSeparator.append("-")
+
+        horizontalSeparatorAsString = "".join(horizontalSeparator)
+
+        #################
+        # Build the rows
+        for row in range(numRows):
+            currentRow = []
+            for column in range(numColumns):
+                cellValue = dataValues[row][column]
+                #print(cellValue)
+                for cell in range(cellSize):
+                    if cell != 1:
+                        currentRow.append(' ')
+                    else:
+                        currentRow.append(str(cellValue))
+                
+                # finish it off with a |
+                bIsLastColum = (column == numColumns-1)
+                if bIsLastColum != True:
+                    currentRow.append('|')
+            
+            rowAsString = "".join(currentRow)
+            print(rowAsString)
+
+            bIsLastRow = (row == numRows-1)
+            if bIsLastRow != True:
+                print(horizontalSeparatorAsString)
+
+
+    def RunGame(self):
+        print("---------->>>Welcome to Jacksquatch Tic-Tac-Toe<<<----------")
+        print("---------------Legend-----------------------")
+        self.DrawBoard(self.boardValuesLegend)
+        print("--------------------------------------------")
+        print("---------------GAME BOARD-------------------")
+        print("--------------------------------------------")
+        self.DrawBoard(self.boardValues)
+
+
 ##########################
 # Game Data - global barf
 ##########################
@@ -57,100 +132,17 @@ playerCharacter = [ 'X', 'O']
 players = [ "Jack", "Moron Computer" ]
 #print(playerCharacter)
 # Where all the game X and O's live.
-boardValues = [[' ' for colums in range(gameRows)] for rows in range(gameColumns)]
-boardValuesLegend = [[0 for colums in range(gameRows)] for rows in range(gameColumns)]
+#boardValues = [[' ' for colums in range(gameRows)] for rows in range(gameColumns)]
+#boardValuesLegend = [[0 for colums in range(gameRows)] for rows in range(gameColumns)]
 
-#########################
-# Fill Board Legend 
-#########################
-def FillBoardLegend():
-    count = 0
-    for row in range(len(boardValuesLegend)) :
-        for column in range(len(boardValuesLegend[row])) :
-            boardValuesLegend[row][column] = str(count)
-            count = count + 1
-    #print(boardValuesLegend)
-
-#######################
-# Draw The Game Board 
-#######################
-def DrawBoard(dataValues):
-#    for row in range(len(dataValues)) :
-#        for column in range(len(dataValues[row])) :
-#            print(dataValues[row][column])
-
-    numRows         = len(dataValues)
-    numColumns      = len(dataValues[0])
-    #print("NumRows: " + str(numRows) + " NumColums: " + str(numColumns))
-
-    cellSize        = 3 # number of characters in a cell ex. " X " two spaces and a character.
-    cellCharIndex   = 1
-    numCharsInRow   = numColumns*cellSize + (numColumns-1)
-    
-    ############################################
-    # Build the horizonal separator between rows
-    horizontalSeparator = []
-    for chars in range(numCharsInRow):
-        horizontalSeparator.append("-")
-
-    horizontalSeparatorAsString = "".join(horizontalSeparator)
-
-    #################
-    # Build the rows
-    for row in range(numRows):
-        currentRow = []
-        for column in range(numColumns):
-            cellValue = dataValues[row][column]
-            #print(cellValue)
-            for cell in range(cellSize):
-                if cell != 1:
-                    currentRow.append(' ')
-                else:
-                    currentRow.append(str(cellValue))
-            
-            # finish it off with a |
-            bIsLastColum = (column == numColumns-1)
-            if bIsLastColum != True:
-                currentRow.append('|')
-        
-        rowAsString = "".join(currentRow)
-        print(rowAsString)
-
-        bIsLastRow = (row == numRows-1)
-        if bIsLastRow != True:
-            print(horizontalSeparatorAsString)
-
-######################
-## MORON COMPUTER AI
-######################
-#def PerformComptuerTerm():
-    # for now choose a random ass cell
-    # find empty cells
-
-######################################
-# Draw the game legend and the board.
-######################################
-def DrawLegendAndBoard():
-    print("---------------Legend-----------------------")
-    DrawBoard(boardValuesLegend)
-    print("--------------------------------------------")
-    print("---------------GAME BOARD-------------------")
-    print("--------------------------------------------")
-    DrawBoard(boardValues)
-
-#######
-# Init
-#######
-def Init() :
-    print("---------->>>Welcome to Jacksquatch Tic-Tac-Toe<<<----------")
-
-    FillBoardLegend()           # Fill legend with data.
-    random.seed()               # Seed randomness 
 
 ########################
 # Main Game Function...
 ########################
 def Run() :
+    gameManager = TTTGameManager(3,3)
+    gameManager.RunGame()
+"""
     Init()
     #Choose random player to start.
     firstPlayerIndex = random.randint(0, len(players)-1)
@@ -168,6 +160,7 @@ def Run() :
     print("")
     p1 = Player("Jack", 'X')
     p1.RunTurn()
+"""
 
 ################
 # Run the game.
