@@ -16,6 +16,35 @@ X,O value will go at index, 1, 5, 9
 
 num characters in a cell = 3 + separators every 4th, exluding the end
 """
+###############
+# Player Class
+###############
+class Player:
+    def __init__(self, name, character):
+        self.name = name
+        self.character = character
+
+    def RunTurn(self):
+        #print("PlayerTurn")
+        turnCellValue = input("Its your turn enter cell:")
+        print("Turn Value is: " + str(turnCellValue))
+
+    def IsHumanControlled(self):
+        return True
+
+##################
+# AI Player Class
+##################
+class AIPlayer(Player):
+    #pass    # pass makes it so no other properties or methods are added to the class
+    def __init__(self, name, character):
+        super().__init__(name, character)
+
+    def RunTurn(self):
+        print("AITurn")
+
+    def IsHumanControlled(self):
+        return False
 
 ##############
 # Game Config stuff, should be in data or data file somewhere so its not hardcoded
@@ -34,34 +63,6 @@ players = [ "Jack", "Moron Computer" ]
 # Where all the game X and O's live.
 boardValues = [[' ' for colums in range(gameRows)] for rows in range(gameColumns)]
 boardValuesLegend = [[0 for colums in range(gameRows)] for rows in range(gameColumns)]
-
-###############
-# Player Class
-###############
-class Player:
-    def __init__(self, name, character):
-        self.name = name
-        self.character = character
-
-    def RunTurn(self):
-        print("PlayerTurn")
-
-    def IsHumanControlled(self):
-        return True
-
-##################
-# AI Player Class
-##################
-class AIPlayer(Player):
-    #pass    # pass makes it so no other properties or methods are added to the class
-    def __init__(self, name, character):
-        super().__init__(name, character)
-
-    def RunTurn(self):
-        print("AITurn")
-
-    def IsHumanControlled(self):
-        return False
 
 #### TEST JUNK ###########################################################
 """
@@ -167,8 +168,6 @@ def Init() :
     FillBoardLegend()           # Fill legend with data.
     random.seed()
 
-
-
 ########################
 # Main Game Function...
 ########################
@@ -185,6 +184,11 @@ def Run() :
     print(firstPlayer + " Character: " + firstPlayerCharacter)
 
     DrawLegendAndBoard()
+
+
+    print("")
+    p1 = Player("Jack", 'X')
+    p1.RunTurn()
 
 ################
 # Run the game.
