@@ -105,9 +105,9 @@ def FillBoardLegend():
 # Draw The Game Board 
 #######################
 def DrawBoardNew(dataValues):
-    for row in range(len(dataValues)) :
-        for column in range(len(dataValues[row])) :
-            print(dataValues[row][column])
+#    for row in range(len(dataValues)) :
+#        for column in range(len(dataValues[row])) :
+#            print(dataValues[row][column])
 
     numRows         = len(dataValues)
     numColumns      = len(dataValues[0])
@@ -127,10 +127,28 @@ def DrawBoardNew(dataValues):
 
     #################
     # Build the rows
-    # Loop the rows, insert cell value at index 1 for each cell.
-    #or row in range(numRows):
-    
-    
+    for row in range(numRows):
+        currentRow = []
+        for column in range(numColumns):
+            cellValue = dataValues[row][column]
+            #print(cellValue)
+            for cell in range(cellSize):
+                if cell != 1:
+                    currentRow.append(' ')
+                else:
+                    currentRow.append(str(cellValue))
+            
+            # finish it off with a |
+            bIsLastColum = (column == numColumns-1)
+            if bIsLastColum != True:
+                currentRow.append('|')
+        
+        rowAsString = "".join(currentRow)
+        print(rowAsString)
+
+        bIsLastRow = (row == numRows-1)
+        if bIsLastRow != True:
+            print(horizontalSeparatorAsString)
 
 def DrawBoard() :
     cellSize = 3 # number of characters in a cell ex. " X " two spaces and a character.
