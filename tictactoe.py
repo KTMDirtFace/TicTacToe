@@ -1,21 +1,19 @@
 import random
 
-#############
-#Tic Tac Toe
-#############
-"""
- X |   |   
------------
-   | X |   
------------
-   |   | X 
+################################################
+################################################
+#Tic Tac Toe - THE GAME
+################################################
+################################################
 
-5 ROWS, 2 of which are | characters at index. 3, 7
-11 characters across a row.
-X,O value will go at index, 1, 5, 9
+##############
+# Game Config stuff, should be in data or data file somewhere so its not hardcoded
+##############
+gameNumHumanPlayers = 1
+gameNumAIPlayers = 1
+gameRows = 3
+gameColumns = 3
 
-num characters in a cell = 3 + separators every 4th, exluding the end
-"""
 ###############
 # Player Class
 ###############
@@ -46,14 +44,6 @@ class AIPlayer(Player):
     def IsHumanControlled(self):
         return False
 
-##############
-# Game Config stuff, should be in data or data file somewhere so its not hardcoded
-##############
-gameNumHumanPlayers = 1
-gameNumAIPlayers = 1
-gameRows = 3
-gameColumns = 3
-
 ##########################
 # Game Data - global barf
 ##########################
@@ -64,25 +54,11 @@ players = [ "Jack", "Moron Computer" ]
 boardValues = [[' ' for colums in range(gameRows)] for rows in range(gameColumns)]
 boardValuesLegend = [[0 for colums in range(gameRows)] for rows in range(gameColumns)]
 
-#### TEST JUNK ###########################################################
-"""
-Player1 = Player("Jack", 'X')
-print(Player1.name)
-print(Player1.character)
-print(Player1.IsHumanControlled())
-Player1.RunTurn()
-
-print("")
-
-AIPlayer1 = AIPlayer("Moron Computer", 'O')
-print(AIPlayer1.name)
-print(AIPlayer1.character)
-print(AIPlayer1.IsHumanControlled())
-AIPlayer1.RunTurn()
-
-print("")
-"""
-#### TEST JUNK ###########################################################
+############################
+# Tic Tac Toe Game Manager
+############################
+#class TTT:
+    
 
 #########################
 # Fill Board Legend 
@@ -169,7 +145,7 @@ def Init() :
     print("---------->>>Welcome to Jacksquatch Tic-Tac-Toe<<<----------")
 
     FillBoardLegend()           # Fill legend with data.
-    random.seed()
+    random.seed()               # Seed randomness 
 
 ########################
 # Main Game Function...
