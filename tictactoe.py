@@ -9,10 +9,16 @@ import random
 ##############
 # Game Config stuff, should be in data or data file somewhere so its not hardcoded
 ##############
+gameErrorStringGeneric = "...[ERROR] Go take a dump!..."
 gameNumHumanPlayers = 1
 gameNumAIPlayers = 1
 gameRows = 3
 gameColumns = 3
+
+############################
+# Tic Tac Toe Game Manager
+############################
+#class TTTGameManager:
 
 ###############
 # Player Class
@@ -53,12 +59,6 @@ players = [ "Jack", "Moron Computer" ]
 # Where all the game X and O's live.
 boardValues = [[' ' for colums in range(gameRows)] for rows in range(gameColumns)]
 boardValuesLegend = [[0 for colums in range(gameRows)] for rows in range(gameColumns)]
-
-############################
-# Tic Tac Toe Game Manager
-############################
-#class TTT:
-    
 
 #########################
 # Fill Board Legend 
