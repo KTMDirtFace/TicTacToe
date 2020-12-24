@@ -49,7 +49,7 @@ class AIPlayer(Player):
         randomCellVal = emptyCells[randomCellIndex]
         print("Its the AI's turn, they chose cell: " + str(randomCellVal))
 
-        return int(randomCellVal)
+        return int(0) #int(randomCellVal)
 
     def IsHumanControlled(self):
         return False
@@ -58,9 +58,9 @@ class AIPlayer(Player):
 # Tic Tac Toe Game Manager
 ############################
 class TTTGameManager:
-    def __init__(self, rows, columns):
-        self.gameRows = rows
-        self.gameColumns = columns
+    def __init__(self, boardSize):
+        self.gameRows = boardSize
+        self.gameColumns = boardSize
         self.boardValues = [[' ' for colums in range(self.gameRows)] for rows in range(self.gameColumns)]
         self.boardValuesLegend = [[0 for colums in range(self.gameRows)] for rows in range(self.gameColumns)]
         self.Players = []
@@ -231,19 +231,54 @@ class TTTGameManager:
         # Does python have enums?
         # for now -1 = no winner, -2 = tie, otherwise its the winning player index.
         winningPlayerIndex = -2 # no winner yet
+        winAmount = self.GetWinRequirment()
         # Check for full rows of same char
         # Check for full columns of same char
         # check for full diagonals of same char.
         for player in self.Players :
             playerChar = player.character
-
+            print(player.name)
+            # Check row for win
             for row in range(self.gameRows) :
-                for column in range(self.gameColumns) :
-                    value = self.boardValues[row][column]
-                    #if value == playerChar :
+                numCharsInRow = self.GetNumCharactersInRow(row, playerChar)
+                if numCharsInRow == winAmount :
+                    print("WON ROW")
+            
+            # Check column for win
+            for colum in range(self.gameColumns) :
+                numCharsInColumn = self.GetNumCharactersInColumn(colum, playerChar)
+                if numCharsInColumn == winAmount :
+                    print("WON COLUM")
 
-             
+    # How many in a row to win.        
+    def GetWinRequirment(self) :
+        return self.gameRows    # eh eventually make sure rows and colums are equal
 
+    # how many matching characters are in this row
+    def GetNumCharactersInRow(self, rowIndex, character) :
+        numChars = 0
+        #for row in range(len(self.boardValues)) :
+        #    for column in range(len(self.boardValues[row])) :
+        #    value = self.boardValues[row][column]
+        for colum in range(self.gameColumns) :
+            value = self.boardValues[rowIndex][colum]
+            if value == character :
+                numChars += 1
+
+        return numChars
+
+    # how many matching characters are in this colum.
+    def GetNumCharactersInColumn(self, columnIndex, character) :
+        numChars = 0
+
+        for row in range(self.gameRows) :
+            value = self.boardValues[row][columnIndex]
+            if value == character :
+                numChars += 1
+
+        return numChars
+
+        
     def RunGame(self):
         print("---------->>>Welcome to Jacksquatch Tic-Tac-Toe<<<----------")
         self.DrawBoardAndLegend()
@@ -262,7 +297,7 @@ class TTTGameManager:
 ########################
 # Globals
 ########################
-gameManager = TTTGameManager(3,3)   # Make the game manager global so it can be accessed in other places.
+gameManager = TTTGameManager(3)   # Make the game manager global so it can be accessed in other places.
                                     # Specifically so the AI Player can access it.
 ########################
 # Main Game Function...
