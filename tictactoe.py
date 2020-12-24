@@ -167,7 +167,9 @@ class TTTGameManager:
                 value = self.boardValues[row][column]
                 if value == ' ' :
                     emptyCellIds.append(int(count))
-                count += count
+                count += 1
+
+        #print(emptyCellIds)
 
         return emptyCellIds
 
@@ -225,12 +227,10 @@ class TTTGameManager:
         self.currentPlayerIndex = random.randint(0, len(self.Players)-1)
         print(self.Players[self.currentPlayerIndex].name + " is up first.")
 
-        t = 0
-        while t < 3:
+        while gameManager.NumOpenCells() > 0:
             self.RunTurn()
             self.NextTurn()
             self.DrawBoardAndLegend()
-            t += 1
 
 ########################
 # Globals
