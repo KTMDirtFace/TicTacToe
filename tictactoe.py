@@ -228,33 +228,51 @@ class TTTGameManager:
 
     # Check for winner or tie.
     def CheckForWin(self):
-        print("Checking for win.")
+        #print("Checking for win.")
         # Does python have enums?
         # for now -1 = no winner, -2 = tie, otherwise its the winning player index.
-        winningPlayerIndex = -2 # no winner yet
+        noWinner = -1
+        tieGame = -2
+        winningPlayerIndex = noWinner # no winner yet
         winAmount = self.GetWinRequirment()
         # Check for full rows of same char
         # Check for full columns of same char
         # check for full diagonals of same char.
+        playerIndex = 0
         for player in self.Players :
             playerChar = player.character
-            print(player.name)
+            #print(player.name)
             # Check row for win
             for row in range(self.gameRows) :
                 numCharsInRow = self.GetNumCharactersInRow(row, playerChar)
                 if numCharsInRow == winAmount :
+                    winningPlayerIndex = playerIndex
                     print("WON ROW")
             
             # Check column for win
             for colum in range(self.gameColumns) :
                 numCharsInColumn = self.GetNumCharactersInColumn(colum, playerChar)
                 if numCharsInColumn == winAmount :
+                    winningPlayerIndex = playerIndex
                     print("WON COLUMN")
 
             # Check for diagonal win
             diagCharsMax = self.GetHighestNumCharsInDiagonals(playerChar)
             if diagCharsMax == winAmount :
+                winningPlayerIndex = playerIndex
                 print("WON DIAGONAL")
+
+            #increment player index
+            playerIndex += 1
+
+        # determine win or tie then return
+        if self.NumOpenCells() == 0 and winningPlayerIndex == noWinner :
+            winningPlayerIndex = tieGame
+            print("----------TIE GAME----------")
+        elif winningPlayerIndex >= 0 :
+            print("------------WON GAME: " + self.Players[winningPlayerIndex].name + "----------")
+
+        return winningPlayerIndex
 
     # How many in a row to win.        
     def GetWinRequirment(self) :
@@ -323,12 +341,20 @@ class TTTGameManager:
         self.currentPlayerIndex = random.randint(0, len(self.Players)-1)
         print(self.Players[self.currentPlayerIndex].name + " is up first.")
 
-        while self.NumOpenCells() > 0:
+        bGameEnded = False
+
+        while self.NumOpenCells() > 0 and bGameEnded != True:
             self.RunTurn()
-            self.CheckForWin()
-            self.NextTurn()
-            #screen_clear()
             self.DrawBoardAndLegend()
+            
+            winCheck = self.CheckForWin()
+
+            if winCheck >= 0 or winCheck == -2 : # someone won or tied so end game
+                bGameEnded = True
+
+            if bGameEnded != True :
+                self.NextTurn()
+                #screen_clear()
 
 ########################
 # Globals
