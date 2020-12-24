@@ -6,15 +6,6 @@ import random
 ################################################
 ################################################
 
-##############
-# Game Config stuff, should be in data or data file somewhere so its not hardcoded
-##############
-gameErrorStringGeneric = "...[ERROR] Go take a dump!..."
-gameNumHumanPlayers = 1
-gameNumAIPlayers = 1
-#gameRows = 3
-#gameColumns = 3
-
 ###############
 # Player Class
 ###############
@@ -41,8 +32,14 @@ class AIPlayer(Player):
         super().__init__(name, character)
 
     def RunTurn(self):
-        print("AITurn")
-        return int(0)
+        # For now make the AI Dumb as hell and just choose a random cell that is not occupied.
+        # create a function in the game manager to return an array of open cell ID's ( from the legend )
+        emptyCells = gameManager.GetEmptyCells()
+        numEmptyCells = len(emptyCells)
+        randomCell = random.randint(0, numEmptyCells-1)
+        print("Its the AI's turn, they chose cell: " + str(randomCell))
+
+        return int(randomCell)
 
     def IsHumanControlled(self):
         return False
@@ -160,6 +157,20 @@ class TTTGameManager:
 
         return count
 
+    # Get a list of empty cells
+    def GetEmptyCells(self) :
+        emptyCellIds = []
+
+        count = 0
+        for row in range(len(self.boardValues)) :
+            for column in range(len(self.boardValues[row])) :
+                value = self.boardValues[row][column]
+                if value == ' ' :
+                    emptyCellIds.append(int(count))
+                count += count
+
+        return emptyCellIds
+
     # Validate value
     def Validate(self, cellIndex):
         # Make sure it is a valid cell 
@@ -215,17 +226,21 @@ class TTTGameManager:
         print(self.Players[self.currentPlayerIndex].name + " is up first.")
 
         t = 0
-        while t < 2:
+        while t < 3:
             self.RunTurn()
             self.NextTurn()
             self.DrawBoardAndLegend()
             t += 1
 
 ########################
+# Globals
+########################
+gameManager = TTTGameManager(3,3) # Make the game manager global so it can be accessed in other places.
+
+########################
 # Main Game Function...
 ########################
 def Run() :
-    gameManager = TTTGameManager(3,3)
     gameManager.AddHumanPlayer("Jack", "X")
     gameManager.AddAIPlayer("Moron Computer", "O")
     gameManager.RunGame()
