@@ -2,6 +2,7 @@ import random
 from os import system, name
 
 def screen_clear() :
+    # for Windows
     if name == 'nt' :
         _ = system('cls')
     # for mac/linux
@@ -82,10 +83,6 @@ class TTTGameManager:
     # Draw The Game Board 
     #######################
     def DrawBoard(self, dataValues):
-    #    for row in range(len(dataValues)) :
-    #        for column in range(len(dataValues[row])) :
-    #            print(dataValues[row][column])
-
         numRows         = len(dataValues)
         numColumns      = len(dataValues[0])
         #print("NumRows: " + str(numRows) + " NumColums: " + str(numColumns))
@@ -231,6 +228,21 @@ class TTTGameManager:
     # Check for winner or tie.
     def CheckForWin(self):
         print("Checking for win.")
+        # Does python have enums?
+        # for now -1 = no winner, -2 = tie, otherwise its the winning player index.
+        winningPlayerIndex = -2 # no winner yet
+        # Check for full rows of same char
+        # Check for full columns of same char
+        # check for full diagonals of same char.
+        for player in self.Players :
+            playerChar = player.character
+
+            for row in range(self.gameRows) :
+                for column in range(self.gameColumns) :
+                    value = self.boardValues[row][column]
+                    #if value == playerChar :
+
+             
 
     def RunGame(self):
         print("---------->>>Welcome to Jacksquatch Tic-Tac-Toe<<<----------")
@@ -250,8 +262,8 @@ class TTTGameManager:
 ########################
 # Globals
 ########################
-gameManager = TTTGameManager(3,3) # Make the game manager global so it can be accessed in other places.
-
+gameManager = TTTGameManager(3,3)   # Make the game manager global so it can be accessed in other places.
+                                    # Specifically so the AI Player can access it.
 ########################
 # Main Game Function...
 ########################
