@@ -49,7 +49,7 @@ class AIPlayer(Player):
         randomCellVal = emptyCells[randomCellIndex]
         print("Its the AI's turn, they chose cell: " + str(randomCellVal))
 
-        return int(0) #int(randomCellVal)
+        return int(randomCellVal)
 
     def IsHumanControlled(self):
         return False
@@ -59,6 +59,7 @@ class AIPlayer(Player):
 ############################
 class TTTGameManager:
     def __init__(self, boardSize):
+        self.boardSize = boardSize
         self.gameRows = boardSize
         self.gameColumns = boardSize
         self.boardValues = [[' ' for colums in range(self.gameRows)] for rows in range(self.gameColumns)]
@@ -248,7 +249,12 @@ class TTTGameManager:
             for colum in range(self.gameColumns) :
                 numCharsInColumn = self.GetNumCharactersInColumn(colum, playerChar)
                 if numCharsInColumn == winAmount :
-                    print("WON COLUM")
+                    print("WON COLUMN")
+
+            # Check for diagonal win
+            diagCharsMax = self.GetHighestNumCharsInDiagonals(playerChar)
+            if diagCharsMax == winAmount :
+                print("WON DIAGONAL")
 
     # How many in a row to win.        
     def GetWinRequirment(self) :
@@ -278,7 +284,37 @@ class TTTGameManager:
 
         return numChars
 
-        
+    # Get max count of characters in both diagonals.
+    def GetHighestNumCharsInDiagonals(self, character) :
+        # for a 3x3 these are the diagonal coordinates.
+        # d1    d2
+        # 0,0   0,2   
+        # 1,1   1,1
+        # 2,2   2,0
+        # d1 first :    0+1 to (max-1)
+        # d1 second:    0+1 to (max-1)
+        # d2 first:     0+1 to (max-1)
+        # d2 second:    (max-1) - 1 to 0
+        ## Diagonal 1
+        #d1CharCount = 0
+        d1C = 0
+        d1Count = 0
+        for d1Row in range(self.boardSize) :
+            value = self.boardValues[d1Row][d1C]
+            d1C += 1
+            if value == character :
+                d1Count += 1
+
+        d2C = self.boardSize - 1
+        d2Count = 0
+        for d2Row in range(self.boardSize) :
+            value = self.boardValues[d2Row][d2C]
+            d2C -= 1
+            if value == character :
+                d2Count += 1
+
+        return int(max(d1Count, d2Count))
+
     def RunGame(self):
         print("---------->>>Welcome to Jacksquatch Tic-Tac-Toe<<<----------")
         self.DrawBoardAndLegend()
@@ -297,7 +333,7 @@ class TTTGameManager:
 ########################
 # Globals
 ########################
-gameManager = TTTGameManager(3)   # Make the game manager global so it can be accessed in other places.
+gameManager = TTTGameManager(3)     # Make the game manager global so it can be accessed in other places.
                                     # Specifically so the AI Player can access it.
 ########################
 # Main Game Function...
