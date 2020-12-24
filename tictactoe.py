@@ -44,10 +44,11 @@ class AIPlayer(Player):
         # create a function in the game manager to return an array of open cell ID's ( from the legend )
         emptyCells = gameManager.GetEmptyCells()
         numEmptyCells = len(emptyCells)
-        randomCell = random.randint(0, numEmptyCells-1)
-        print("Its the AI's turn, they chose cell: " + str(randomCell))
+        randomCellIndex = random.randint(0, numEmptyCells-1)
+        randomCellVal = emptyCells[randomCellIndex]
+        print("Its the AI's turn, they chose cell: " + str(randomCellVal))
 
-        return int(randomCell)
+        return int(randomCellVal)
 
     def IsHumanControlled(self):
         return False
@@ -177,7 +178,7 @@ class TTTGameManager:
                     emptyCellIds.append(int(count))
                 count += 1
 
-        #print(emptyCellIds)
+        print(emptyCellIds)
 
         return emptyCellIds
 
@@ -227,6 +228,10 @@ class TTTGameManager:
         print("--------------------------------------------")
         self.DrawBoard(self.boardValues)
 
+    # Check for winner or tie.
+    def CheckForWin(self):
+        print("Checking for win.")
+
     def RunGame(self):
         print("---------->>>Welcome to Jacksquatch Tic-Tac-Toe<<<----------")
         self.DrawBoardAndLegend()
@@ -237,8 +242,9 @@ class TTTGameManager:
 
         while gameManager.NumOpenCells() > 0:
             self.RunTurn()
+            self.CheckForWin()
             self.NextTurn()
-            screen_clear()
+            #screen_clear()
             self.DrawBoardAndLegend()
 
 ########################
