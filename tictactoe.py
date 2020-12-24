@@ -323,7 +323,7 @@ class TTTGameManager:
         self.currentPlayerIndex = random.randint(0, len(self.Players)-1)
         print(self.Players[self.currentPlayerIndex].name + " is up first.")
 
-        while gameManager.NumOpenCells() > 0:
+        while self.NumOpenCells() > 0:
             self.RunTurn()
             self.CheckForWin()
             self.NextTurn()
