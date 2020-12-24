@@ -1,4 +1,12 @@
 import random
+from os import system, name
+
+def screen_clear() :
+    if name == 'nt' :
+        _ = system('cls')
+    # for mac/linux
+    else :
+        _ = system('clear')
 
 ################################################
 ################################################
@@ -230,6 +238,7 @@ class TTTGameManager:
         while gameManager.NumOpenCells() > 0:
             self.RunTurn()
             self.NextTurn()
+            screen_clear()
             self.DrawBoardAndLegend()
 
 ########################
